@@ -107,37 +107,66 @@ class _OrderAppState extends State<OrderApp> {
       developer.log('Initializing sync service...', name: 'OrderApp');
       await SyncService.instance.initialize(spreadsheetId, authClient);
 
-      // Perform bi-directional sync
+      // Perform bi-directional sync (non-fatal if it fails)
       developer.log('Syncing data...', name: 'OrderApp');
-      
-      // 1. Push any local data that isn't in Sheets yet
-      await SyncService.instance.pushToSheets();
-      
-      // 2. Pull data from Sheets (now safer as it won't overwrite local changes)
-      await SyncService.instance.pullFromSheets();
-      
-      developer.log('Data sync complete', name: 'OrderApp');
+      try {
+        // 1. Push any local data that isn't in Sheets yet
+        await SyncService.instance.pushToSheets();
+
+        // 2. Pull data from Sheets (now safer as it won't overwrite local changes)
+        await SyncService.instance.pullFromSheets();
+
+        developer.log('Data sync complete', name: 'OrderApp');
+      } catch (e) {
+        developer.log('Sync failed (non-fatal, app continues): $e', name: 'OrderApp', level: 900);
+      }
 
       // Start connectivity watcher
       SyncService.instance.startConnectivityWatcher();
       developer.log('App initialization complete!', name: 'OrderApp');
     } catch (e) {
       developer.log('Error initializing app: $e', name: 'OrderApp', level: 1000);
-      rethrow;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'retailTrack',
+      title: 'Gagan Foods',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
+          seedColor: const Color(0xFF9D0C0F), // Gagan Foods brand maroon
           brightness: Brightness.light,
         ),
         useMaterial3: true,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF9D0C0F),
+            foregroundColor: Colors.white,
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: const Color(0xFF9D0C0F),
+            side: const BorderSide(color: Color(0xFF9D0C0F)),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: const Color(0xFF9D0C0F),
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFF9D0C0F),
+          foregroundColor: Colors.white,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xFF9D0C0F), width: 2),
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
         cardTheme: const CardThemeData(
           elevation: 2,
           shape: RoundedRectangleBorder(

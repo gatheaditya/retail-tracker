@@ -75,90 +75,132 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // App Logo / Icon
-              Image.asset(
-                'assets/retailTrack.png',
-                width: 120,
-                height: 120,
+      body: Stack(
+        children: [
+          // Background spices image (bottom-right)
+          Positioned(
+            bottom: -40,
+            right: -30,
+            child: Opacity(
+              opacity: 0.15,
+              child: Image.asset(
+                'assets/spices.png',
+                height: 350,
               ),
-              const SizedBox(height: 32),
-              // App Title
-              Text(
-                'retailTrack',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+            ),
+          ),
+          // Leaf accent (top-left)
+          Positioned(
+            top: -20,
+            left: -30,
+            child: Opacity(
+              opacity: 0.12,
+              child: Image.asset(
+                'assets/leaf-1.png',
+                height: 160,
               ),
-              const SizedBox(height: 8),
-              // App Subtitle
-              Text(
-                'Manage your orders efficiently',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
-              const SizedBox(height: 48),
-              // Loading or Sign-in button
-              if (_isLoading) ...[
-                const CircularProgressIndicator(),
-                const SizedBox(height: 16),
-                Text(
-                  'Signing in...',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+          // Leaf accent (top-right)
+          Positioned(
+            top: 60,
+            right: -20,
+            child: Opacity(
+              opacity: 0.10,
+              child: Transform.flip(
+                flipX: true,
+                child: Image.asset(
+                  'assets/leaf-2.png',
+                  height: 120,
                 ),
-              ] else ...[
-                ElevatedButton.icon(
-                  onPressed: _handleSignIn,
-                  icon: const Icon(Icons.login),
-                  label: const Text('Sign in with Google'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+          ),
+          // Main content
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // App Logo / Icon
+                  Image.asset(
+                    'assets/gagan_logo.png',
+                    width: 180,
+                    height: 80,
                   ),
-                ),
-                const SizedBox(height: 16),
-                // Error message
-                if (_errorMessage != null)
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.red.shade50,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.red.shade200),
+                  const SizedBox(height: 32),
+                  // App Title
+                  Text(
+                    'Gagan Foods',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  // App Subtitle
+                  Text(
+                    'Manage your orders efficiently',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  const SizedBox(height: 48),
+                  // Loading or Sign-in button
+                  if (_isLoading) ...[
+                    const Center(child: CircularProgressIndicator()),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Signing in...',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                    child: Text(
-                      _errorMessage!,
-                      style: TextStyle(
-                        color: Colors.red.shade700,
-                        fontSize: 14,
+                  ] else ...[
+                    ElevatedButton.icon(
+                      onPressed: _handleSignIn,
+                      icon: const Icon(Icons.login),
+                      label: const Text('Sign in with Google'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
                     ),
+                    const SizedBox(height: 16),
+                    // Error message
+                    if (_errorMessage != null)
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade50,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.red.shade200),
+                        ),
+                        child: Text(
+                          _errorMessage!,
+                          style: TextStyle(
+                            color: Colors.red.shade700,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                  ],
+                  const SizedBox(height: 32),
+                  // Info text
+                  Text(
+                    'Sign in with your Google account to sync your orders across devices',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
-              ],
-              const SizedBox(height: 32),
-              // Info text
-              Text(
-                'Sign in with your Google account to sync your orders across devices',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

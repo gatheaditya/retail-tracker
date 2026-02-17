@@ -33,7 +33,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _createDB,
       onUpgrade: _onUpgrade,
     );
@@ -112,16 +112,29 @@ class DatabaseHelper {
     
     if (oldVersion < 3) {
       // Add new columns to clients table
-      await db.execute('ALTER TABLE clients ADD COLUMN city TEXT DEFAULT ""');
-      await db.execute('ALTER TABLE clients ADD COLUMN postalCode TEXT DEFAULT ""');
-      await db.execute('ALTER TABLE clients ADD COLUMN contactPerson TEXT DEFAULT ""');
-      
+      await _addColumnIfMissing(db, 'clients', 'city', 'TEXT DEFAULT ""');
+      await _addColumnIfMissing(db, 'clients', 'postalCode', 'TEXT DEFAULT ""');
+      await _addColumnIfMissing(db, 'clients', 'contactPerson', 'TEXT DEFAULT ""');
+
       // Also ensure product category column exists
-      try {
-        await db.execute('ALTER TABLE products ADD COLUMN category TEXT DEFAULT "General"');
-      } catch (e) {
-        // Might already exist
-      }
+      await _addColumnIfMissing(db, 'products', 'category', 'TEXT DEFAULT "General"');
+    }
+
+    if (oldVersion < 4) {
+      // Defensive: ensure all columns exist regardless of prior migration state
+      await _addColumnIfMissing(db, 'clients', 'city', 'TEXT DEFAULT ""');
+      await _addColumnIfMissing(db, 'clients', 'postalCode', 'TEXT DEFAULT ""');
+      await _addColumnIfMissing(db, 'clients', 'contactPerson', 'TEXT DEFAULT ""');
+      await _addColumnIfMissing(db, 'products', 'category', 'TEXT DEFAULT "General"');
+    }
+  }
+
+  Future<void> _addColumnIfMissing(Database db, String table, String column, String type) async {
+    final result = await db.rawQuery('PRAGMA table_info($table)');
+    final columns = result.map((r) => r['name'] as String).toSet();
+    if (!columns.contains(column)) {
+      await db.execute('ALTER TABLE $table ADD COLUMN $column $type');
+      developer.log('Added column $column to $table', name: 'DatabaseHelper');
     }
   }
 

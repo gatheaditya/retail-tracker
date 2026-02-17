@@ -1,9 +1,9 @@
-name: flutter_order_app
-description: An order taking app built with Flutter
+name: retail_tracker
+description: An order taking app built
 
 publish_to: 'none'
 
-version: 1.0.1+2
+version: 1.1.0+3
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -35,11 +35,11 @@ dev_dependencies:
 
 flutter_launcher_icons:
   android: "launcher_icon"
-  ios: true
-  image_path: "assets/retailTrack.png"
+  ios: false
+  image_path: "assets/gagan_logo.png"
   web:
     generate: true
-    image_path: "assets/retailTrack.png"
+    image_path: "assets/gagan_logo.png"
 
 flutter:
   uses-material-design: true
@@ -47,3 +47,11 @@ flutter:
     - assets/products.xlsx
     - assets/retailTrack.png
     - assets/clients.xlsx
+    - assets/gagan_logo.png
+    - assets/spices.png
+    - assets/bring-in.png
+    - assets/vecteezy.png
+    - assets/leaf-1.png
+    - assets/leaf-2.png
+    - assets/img_1_nobg.png
+    - assets/img_nobg.png

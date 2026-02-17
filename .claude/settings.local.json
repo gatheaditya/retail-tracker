@@ -19,7 +19,10 @@
       "Bash(flutter build:*)",
       "Bash(flutter pub run:*)",
       "Bash(ls:*)",
-      "Bash(~/Library/Android/sdk/platform-tools/adb shell:*)"
+      "Bash(~/Library/Android/sdk/platform-tools/adb shell:*)",
+      "WebFetch(domain:www.gaganfoods.com)",
+      "Bash(pip3 install:*)",
+      "Bash(python3:*)"
     ]
   }
 }

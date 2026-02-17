@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../database/database_helper.dart';
+import '../data/seed_data.dart';
 import '../models/product.dart';
 import 'import_products_screen.dart';
 
@@ -87,7 +88,21 @@ class _ProductsScreenState extends State<ProductsScreen> {
       appBar: AppBar(
         title: const Text('Products'),
       ),
-      body: Column(
+      body: Stack(
+        children: [
+          // Background spices image
+          Positioned(
+            bottom: -20,
+            right: -40,
+            child: Opacity(
+              opacity: 0.08,
+              child: Image.asset(
+                'assets/img_1_nobg.png',
+                width: 300,
+              ),
+            ),
+          ),
+          Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -141,12 +156,31 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                   color: Theme.of(context).colorScheme.secondaryContainer,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Text(
-                                  product.category,
-                                  style: TextStyle(
-                                    color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                    fontSize: 11,
-                                  ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (SeedData.getCategoryImage(product.category) != null)
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 4),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(7),
+                                          child: Image.network(
+                                            SeedData.getCategoryImage(product.category)!,
+                                            width: 14,
+                                            height: 14,
+                                            fit: BoxFit.contain,
+                                            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                                          ),
+                                        ),
+                                      ),
+                                    Text(
+                                      product.category,
+                                      style: TextStyle(
+                                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                        fontSize: 11,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -172,6 +206,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     },
                   ),
           ),
+        ],
+      ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

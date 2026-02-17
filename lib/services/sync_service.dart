@@ -47,6 +47,7 @@ class SyncService {
         await dbHelper.replaceAllClients(clients);
         developer.log('Pulled ${clients.length} clients from Sheets', name: 'SyncService');
       }
+      await Future.delayed(const Duration(seconds: 1)); // Rate limit
 
       // Pull Products
       final productRows = await SheetsService.instance.readSheet(_authClient!, _spreadsheetId!, _tabNames['products']!);
@@ -55,6 +56,7 @@ class SyncService {
         await dbHelper.replaceAllProducts(products);
         developer.log('Pulled ${products.length} products from Sheets', name: 'SyncService');
       }
+      await Future.delayed(const Duration(seconds: 1)); // Rate limit
 
       // Pull Orders
       final orderRows = await SheetsService.instance.readSheet(_authClient!, _spreadsheetId!, _tabNames['orders']!);
@@ -63,6 +65,7 @@ class SyncService {
         await dbHelper.replaceAllOrders(orders);
         developer.log('Pulled ${orders.length} orders from Sheets', name: 'SyncService');
       }
+      await Future.delayed(const Duration(seconds: 1)); // Rate limit
 
       // Pull OrderItems
       final itemRows = await SheetsService.instance.readSheet(_authClient!, _spreadsheetId!, _tabNames['order_items']!);
@@ -266,6 +269,9 @@ class SyncService {
           phone: row.length > 2 ? row[2].toString() : '',
           email: row.length > 3 ? row[3].toString() : '',
           address: row.length > 4 ? row[4].toString() : '',
+          city: row.length > 5 ? row[5].toString() : '',
+          postalCode: row.length > 6 ? row[6].toString() : '',
+          contactPerson: row.length > 7 ? row[7].toString() : '',
         );
       } catch (e) {
         developer.log('Error parsing client row: $e', name: 'SyncService', level: 1000);
@@ -344,6 +350,9 @@ class SyncService {
           row['phone'] ?? '',
           row['email'] ?? '',
           row['address'] ?? '',
+          row['city'] ?? '',
+          row['postalCode'] ?? '',
+          row['contactPerson'] ?? '',
         ];
       case 'products':
         return [

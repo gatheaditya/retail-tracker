@@ -141,10 +141,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Order #${order['id']}',
-                                style: Theme.of(context).textTheme.titleMedium,
+                              Flexible(
+                                child: Text(
+                                  'Order #${(order['id'] as String).substring(0, 8)}',
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
+                              const SizedBox(width: 8),
                               _buildStatusChip(order['status'] as String),
                             ],
                           ),

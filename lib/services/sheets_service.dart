@@ -8,7 +8,7 @@ class SheetsService {
   static const _spreadsheetName = 'Order App Data';
   static const _tabNames = ['Clients', 'Products', 'Orders', 'OrderItems'];
   static const _headers = [
-    ['id', 'name', 'phone', 'email', 'address'],
+    ['id', 'name', 'phone', 'email', 'address', 'city', 'postalCode', 'contactPerson'],
     ['id', 'name', 'description', 'price', 'sku', 'category'],
     ['id', 'clientId', 'orderDate', 'totalAmount', 'status'],
     ['id', 'orderId', 'productId', 'productName', 'quantity', 'unitPrice'],

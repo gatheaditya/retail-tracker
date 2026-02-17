@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../database/database_helper.dart';
+import '../../data/seed_data.dart';
 import '../../models/client.dart';
 import '../../models/product.dart';
 import 'cart_item.dart';
@@ -129,6 +130,31 @@ class _SelectProductsScreenState extends State<SelectProductsScreen> {
     return {for (final key in sortedKeys) key: grouped[key]!};
   }
 
+  Widget _buildCategoryIcon(String category, {double size = 18}) {
+    final imageUrl = SeedData.getCategoryImage(category);
+    if (imageUrl != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(size / 2),
+        child: Image.network(
+          imageUrl,
+          width: size,
+          height: size,
+          fit: BoxFit.contain,
+          errorBuilder: (_, __, ___) => Icon(
+            Icons.category,
+            size: size,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+      );
+    }
+    return Icon(
+      Icons.category,
+      size: size,
+      color: Theme.of(context).colorScheme.primary,
+    );
+  }
+
   Widget _buildGroupedProductList() {
     final grouped = _groupByCategory();
     return ListView.builder(
@@ -146,11 +172,7 @@ class _SelectProductsScreenState extends State<SelectProductsScreen> {
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.category,
-                    size: 18,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                  _buildCategoryIcon(entry.key, size: 20),
                   const SizedBox(width: 8),
                   Text(
                     entry.key,
@@ -414,7 +436,7 @@ class _SelectProductsScreenState extends State<SelectProductsScreen> {
           // Category filter chips
           if (_categories.isNotEmpty)
             Container(
-              height: 50,
+              height: 58,
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -426,6 +448,7 @@ class _SelectProductsScreenState extends State<SelectProductsScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: FilterChip(
+                        avatar: const Icon(Icons.select_all, size: 18),
                         label: Text('All (${_products.length})'),
                         selected: isSelected,
                         onSelected: (_) {
@@ -442,9 +465,16 @@ class _SelectProductsScreenState extends State<SelectProductsScreen> {
                   final count = _products
                       .where((p) => p.category == category)
                       .length;
+                  final imageUrl = SeedData.getCategoryImage(category);
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: FilterChip(
+                      avatar: imageUrl != null
+                          ? CircleAvatar(
+                              backgroundImage: NetworkImage(imageUrl),
+                              backgroundColor: Colors.white,
+                            )
+                          : null,
                       label: Text('$category ($count)'),
                       selected: isSelected,
                       onSelected: (_) {

@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter run:*)",
+      "Bash(flutter create:*)",
+      "Bash(pkill:*)",
+      "Bash(curl:*)",
+      "Bash(find:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(chmod:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)",
+      "Bash(flutter clean:*)",
+      "Bash(flutter pub get:*)",
+      "Bash(flutter devices:*)",
+      "Bash(flutter emulators:*)",
+      "Bash(flutter doctor:*)",
+      "Bash(flutter config:*)",
+      "Bash(flutter build:*)",
+      "Bash(flutter pub run:*)",
+      "Bash(ls:*)",
+      "Bash(~/Library/Android/sdk/platform-tools/adb shell:*)"
+    ]
+  }
+}
